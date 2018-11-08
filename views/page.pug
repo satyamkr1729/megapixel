@@ -1,0 +1,14 @@
+html
+    head
+        title Megapixel
+    body
+        -var address="";
+        -if(Array.isArray(add))
+            -add.forEach((val,num)=>{address+="add="+val+"&"})
+        -else
+            -address+="add="+add+"&";
+        -for(var i=0;i<files.length;i++)
+            div
+            -var path=address;
+            a(href="/megapixel/?"+address+"add="+files[i]) #{files[i]}
+            
