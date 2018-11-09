@@ -7,14 +7,23 @@ html
             -add.forEach((val,num)=>{address+="add="+val+"&"})
         -else
             -address+="add="+add+"&";
-
-        -files.forEach((val,num)=>{
-            div
-                -if(val.type=="folder")
-                    a(href="/megapixel/?"+address+"add="+val.path) #{val.path}
-                -else if(val.type=="image")
-                    img(src=val.path height="50%" width="40%")
-                -else
-                    video(height="50%" width="40%" controls)
-                        source(src=val.path)
-        -})
+        table
+            tr 
+                td name
+                td Size
+                td Download Link
+            -files.forEach((val,num)=>{
+                tr
+                    -if(val.type=="folder")
+                        td 
+                            a(href="/megapixel/?"+address+"add="+val.path) #{val.path}
+                        td
+                            div #{val.fsize}
+                        td 
+                            a(href=str+"/"+val.path) Download
+                    -else if(val.type=="image")
+                        img(src=val.path height="50%" width="40%")
+                    -else
+                        video(height="50%" width="40%" controls)
+                            source(src=val.path)
+            -})

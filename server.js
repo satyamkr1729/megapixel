@@ -1,7 +1,9 @@
 var express=require('express');
 var fs=require('fs');
 var mime=require('mime')
+var archive=require('archiver')
 var app=express();
+var getSize=require('get-folder-size');
 var path="/media/satyam/funplace/megapixels";
 
 app.set('view engine','pug')
@@ -15,10 +17,10 @@ app.get("/megapixel",function(req,res)
         add.forEach((val,num)=>{str+="/"+val});
     else
         str+="/"+add;
-    console.log(str);
+   // console.log(str);
 
     var mtype=mime.getType(str);
-    if(mtype!=null)
+    if(mtype)
         mtype=mtype.split('/')[0];
 
     if(mtype=="image")
@@ -28,25 +30,43 @@ app.get("/megapixel",function(req,res)
     else
     {
         fs.readdir(str,(err,files)=>{
-            // console.log(files)
+           //  console.log(files)
             var rindex=[];
             files.forEach((val,num)=>{
                 if(val[0]=='.')
                     rindex.push(num);
                 else
-                    files[num]={path: val, type: "folder"}            
+                {
+                    var mtype=mime.getType(str+"/"+val);
+                    if(mtype && (mtype.split("/")[0]=="image" || mtype.split("/")[0]=="video"))
+                    {           
+                        var stats=fs.statSync(str+"/"+val);
+                        files[num]={path: val, type: "folder", fsize: (stats.size/1024/1024).toFixed(2)};
+                    }
+                    else
+                        files[num]={path: val, type: "folder", fsize: "--"}
+                }
             })
-
-            rindex.forEach((val,num)=>{
-                files.splice(val,1);
-            })
-           // console.log(files);
-            res.render("page",{files: files,add: add})
+            if(rindex.length!=0)
+                files.splice(rindex[0],rindex.length);
+            
+            //console.log(files);
+            res.render("page",{files: files,add: add, str: str})
         })
     }
 })
 
 app.use("/media",(req,res)=>{
-    res.sendFile(decodeURIComponent(req.originalUrl))
+    var url=req.originalUrl;
+    var mtype=mime.getType(url);
+    if(mtype && (mtype.split("/")[0]=="image" || mtype.split("/")[0]=="video"))
+        res.sendFile(decodeURIComponent(req.originalUrl))
+    else
+    {
+        var arch=archive('zip');
+        arch.pipe(res);
+        arch.directory(url,"")
+        arch.finalize();
+    }
 })
 app.listen(3000);

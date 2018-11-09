@@ -10,7 +10,9 @@
   "author": "satyam",
   "license": "ISC",
   "dependencies": {
+    "archiver": "^3.0.0",
     "express": "^4.16.4",
+    "get-folder-size": "^2.0.0",
     "mime": "^2.3.1",
     "pug": "^2.0.3"
   }
