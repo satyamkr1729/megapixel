@@ -7,8 +7,14 @@ html
             -add.forEach((val,num)=>{address+="add="+val+"&"})
         -else
             -address+="add="+add+"&";
-        -for(var i=0;i<files.length;i++)
+
+        -files.forEach((val,num)=>{
             div
-            -var path=address;
-            a(href="/megapixel/?"+address+"add="+files[i]) #{files[i]}
-            
+                -if(val.type=="folder")
+                    a(href="/megapixel/?"+address+"add="+val.path) #{val.path}
+                -else if(val.type=="image")
+                    img(src=val.path height="50%" width="40%")
+                -else
+                    video(height="50%" width="40%" controls)
+                        source(src=val.path)
+        -})
