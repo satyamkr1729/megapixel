@@ -5,13 +5,13 @@ html
     body
         -files.forEach((val,num)=>{
             -if(val.type=="folder")
-                a(href="/megapixel"+str+"/"+val.name) 
+                a(href="/megapixel/"+str+val.name+"/") 
                     div(style="display: inline-block; width:200 px; font-size:80%; text-align: center; padding-left: 1em" )
-                        img(src="/thumb"+str+"/"+val.name width="180px" height="120px" style="padding-bottom:0.5em;") 
+                        img(src="/thumb/"+str+val.name width="180px" height="120px" style="padding-bottom:0.5em;") 
                         p #{val.name}
             -else if(val.type=="image")
-                img(src="/download"+str height="50%" width="40%")
+                img(src="/download/"+str height="50%" width="40%")
             -else
                 video(height="50%" width="40%" controls)
-                    source(src="/download"+str)
+                    source(src="/download/"+str)
         -})

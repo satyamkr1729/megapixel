@@ -3,6 +3,7 @@ var fs=require('fs');
 var mime=require('mime')
 var archive=require('archiver')
 var forward=require('./http-forward');
+var stream=require('stream')
 
 var app=express();
 var getSize=require('get-folder-size');
@@ -17,9 +18,9 @@ app.use("/megapixel",(req,res)=>{
    var str= req.originalUrl;
  //  console.log(str);
 
-   str=str.replace("/megapixel","");
+   str=str.replace("/megapixel/","");
    str=decodeURIComponent(str);
- //  console.log(str);
+   console.log(str);
 
     var mtype=mime.getType(path+str);
     if(mtype)
@@ -57,7 +58,7 @@ app.use("/megapixel",(req,res)=>{
 
 app.use("/download",(req,res)=>{
     var url=req.originalUrl;
-    url=url.replace("/download","");
+    url=url.replace("/download/","");
     url=decodeURIComponent(url);
     //console.log(url);
     var mtype=mime.getType(path+url);
@@ -74,15 +75,29 @@ app.use("/download",(req,res)=>{
 
 app.use("/thumb",(req,res)=>{
     var str=req.originalUrl;
-    str=str.replace("/thumb","");
+    str=str.replace("/thumb/","");
     str=decodeURIComponent(str);
     var mtype=mime.getType(path+str);
     if(mtype)
     {
         if(mtype.split("/")[0]=="image")
         {
-            req.forward={target: "http://localhost:3001/thumb"}
-            forward(req,res);
+            var k=str.split("/");
+            str=str.replace("/"+k[k.length-1],"");
+            fs.readFile(path+str+"/.thumb/"+k[k.length-1],(err,data)=>{
+                if(err)
+                {
+                    req.forward={target: "http://localhost:3001/thumb"}
+                    forward(req,res);        
+                }
+                else
+                {
+                    var reader=new stream.Readable({read: ()=>{}})
+                    reader.pipe(res);
+                    reader.push(data);
+                    reader.push(null);
+                }
+            })
         }
         else
             res.sendFile(__dirname+"/images/video.png")

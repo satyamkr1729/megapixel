@@ -12,14 +12,14 @@ html
                 tr
                     -if(val.type=="folder")
                         td 
-                            a(href="/megapixel"+str+"/"+val.name) #{val.name}
+                            a(href="/megapixel/"+str+val.name+"/") #{val.name}
                         td
                             div #{val.fsize}
                         td 
-                            a(href="/download"+str+"/"+val.name) Download
+                            a(href="/download/"+str+val.name+"/") Download
                     -else if(val.type=="image")
-                        img(src="/download"+str height="50%" width="40%")
+                        img(src="/download/"+str height="50%" width="40%")
                     -else
                         video(height="50%" width="40%" controls)
-                            source(src="/download"+str)
+                            source(src="/download/"+str)
             -})
