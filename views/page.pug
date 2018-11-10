@@ -1,13 +1,10 @@
 html
     head
         title Megapixel
+        link(href="/files/page.css" rel="stylesheet" type="text/css")
     body
         -var address="";
-        -if(Array.isArray(add))
-            -add.forEach((val,num)=>{address+="add="+val+"&"})
-        -else
-            -address+="add="+add+"&";
-        table
+        table(class="tcontent")
             tr 
                 td name
                 td Size
@@ -16,14 +13,14 @@ html
                 tr
                     -if(val.type=="folder")
                         td 
-                            a(href="/megapixel/?"+address+"add="+val.path) #{val.path}
+                            a(href="/megapixel"+str+"/"+val.name) #{val.name}
                         td
                             div #{val.fsize}
                         td 
-                            a(href=str+"/"+val.path) Download
+                            a(href="/download"+str+"/"+val.name) Download
                     -else if(val.type=="image")
-                        img(src=val.path height="50%" width="40%")
+                        img(src="/download"+str height="50%" width="40%")
                     -else
                         video(height="50%" width="40%" controls)
-                            source(src=val.path)
+                            source(src="/download"+str)
             -})

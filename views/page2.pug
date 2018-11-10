@@ -1,0 +1,21 @@
+html
+    head
+        title Megapixel
+        link(href="files/page.css" rel="stylesheet" type="text/css")
+    body
+        -var address="";
+        -if(Array.isArray(add))
+            -add.forEach((val,num)=>{address+="add="+val+"&"})
+        -else
+            -address+="add="+add+"&";
+        -files.forEach((val,num)=>{
+            -if(val.type=="folder")
+                a(href="/megapixel/?"+address+"add="+val.path) 
+                    div(style="width:200 px; font-size:80%; text-align:center;")
+                        img(src="/thumb/?"+address+"add="+val.path width="200px" height="100px" style="padding-bottom:0.5em;")#{val.path}
+            -else if(val.type=="image")
+                img(src=val.path height="50%" width="40%")
+            -else
+                video(height="50%" width="40%" controls)
+                    source(src=val.path)
+        -})
