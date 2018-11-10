@@ -2,6 +2,9 @@ var express=require('express');
 var fs=require('fs');
 var mime=require('mime')
 var archive=require('archiver')
+var stream=require('stream')
+var thumb=require('image-thumbnail')
+
 var app=express();
 var getSize=require('get-folder-size');
 var path="/media/satyam/funplace/megapixels/";
@@ -15,16 +18,10 @@ app.get("/files/:file",(req,res)=>{
 
 app.use("/megapixel",function(req,res)
 {
-   // var add=req.query.add || [];
-   // var str=path;
    var str= req.originalUrl;
    console.log(str);
 
    str=str.replace("/megapixel","");
-   //  if(Array.isArray(add))
-   //  add.forEach((val,num)=>{str+="/"+val});
-   //else
-   //   str+="/"+add;
    str=decodeURIComponent(str);
    console.log(str);
 
@@ -46,8 +43,6 @@ app.use("/megapixel",function(req,res)
                     rindex.push(num);
                 else
                 {
-                    //var mtype=mime.getType(str+"/"+val);
-                    //if(mtype && (mtype.split("/")[0]=="image" || mtype.split("/")[0]=="video"))
                     var stats=fs.statSync(path+str+"/"+val);
                     if(stats.isFile())
                         files[num]={name: val, type: "folder", fsize: (stats.size/1024/1024).toFixed(2)};
@@ -59,7 +54,7 @@ app.use("/megapixel",function(req,res)
                 files.splice(rindex[0],rindex.length);
             
             //console.log(files);
-            res.render("page",{files: files,str: str})
+            res.render("page2",{files: files,str: str})
         })
     }
 })
@@ -79,6 +74,24 @@ app.use("/download",(req,res)=>{
         arch.directory(path+url,"")
         arch.finalize();
     }
+})
+
+app.use("/thumb",(req,res)=>{
+    var str=req.originalUrl;
+    str=str.replace("/thumb","");
+    str=decodeURIComponent(str);
+    var mtype=mime.getType(path+str);
+    if(mtype)
+    {
+        thumb(path+str).then(thumbnail=>{
+            var reader= new stream.Readable({read: ()=>{}});
+            reader.pipe(res);
+            reader.push(thumbnail);
+            reader.push(null);
+        })
+    }
+    else
+        res.sendFile(__dirname+"/images/folder.png")
 })
 
 app.listen(3000);
