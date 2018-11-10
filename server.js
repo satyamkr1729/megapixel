@@ -2,8 +2,7 @@ var express=require('express');
 var fs=require('fs');
 var mime=require('mime')
 var archive=require('archiver')
-var stream=require('stream')
-var thumb=require('image-thumbnail')
+var forward=require('./http-forward');
 
 var app=express();
 var getSize=require('get-folder-size');
@@ -12,18 +11,15 @@ var path="/media/satyam/funplace/megapixels/";
 app.set('view engine','pug')
 app.set('views','./views')
 
-app.get("/files/:file",(req,res)=>{
-    res.sendFile(__dirname+"/views/"+req.params.file)
-})
+app.use("/files",express.static(__dirname+"/views"))
 
-app.use("/megapixel",function(req,res)
-{
+app.use("/megapixel",(req,res)=>{
    var str= req.originalUrl;
-   console.log(str);
+ //  console.log(str);
 
    str=str.replace("/megapixel","");
    str=decodeURIComponent(str);
-   console.log(str);
+ //  console.log(str);
 
     var mtype=mime.getType(path+str);
     if(mtype)
@@ -83,12 +79,19 @@ app.use("/thumb",(req,res)=>{
     var mtype=mime.getType(path+str);
     if(mtype)
     {
-        thumb(path+str).then(thumbnail=>{
+        if(mtype.split("/")[0]=="image")
+        {
+            req.forward={target: "http://localhost:3001/thumb"}
+            forward(req,res);
+        }
+        else
+            res.sendFile(__dirname+"/images/video.png")
+        /*thumb(path+str).then(thumbnail=>{
             var reader= new stream.Readable({read: ()=>{}});
             reader.pipe(res);
             reader.push(thumbnail);
             reader.push(null);
-        })
+        })*/
     }
     else
         res.sendFile(__dirname+"/images/folder.png")
