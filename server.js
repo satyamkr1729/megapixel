@@ -7,7 +7,7 @@ var stream=require('stream')
 
 var app=express();
 var getSize=require('get-folder-size');
-var path="/media/satyam/funplace/megapixels/";
+var path="/media/satyam/funplace/megapixels";
 
 app.set('view engine','pug')
 app.set('views','./views')
@@ -15,21 +15,20 @@ app.set('views','./views')
 app.use("/files",express.static(__dirname+"/views"))
 
 app.use("/megapixel",(req,res)=>{
-   var str= req.originalUrl;
- //  console.log(str);
-
-   str=str.replace("/megapixel/","");
-   str=decodeURIComponent(str);
-   console.log(str);
+    var address=address_resolver(req);
+    var str=address.str;
+    var add=address.add;
+    str=decodeURIComponent(str);
+  //  console.log(path+str);
 
     var mtype=mime.getType(path+str);
     if(mtype)
         mtype=mtype.split('/')[0];
 
     if(mtype=="image")
-        res.render("page",{files: [{name: str, type: mtype}], str: str});
+        res.render("page",{files: [{name: str, type: mtype}], add: add});
     else if(mtype=="video")
-        res.render("page",{files: [{name: str, type: mtype}], str: str});
+        res.render("page",{files: [{name: str, type: mtype}], add: add});
     else
     {
         fs.readdir(path+str, (err,files)=>{
@@ -51,14 +50,15 @@ app.use("/megapixel",(req,res)=>{
                 files.splice(rindex[0],rindex.length);
             
             //console.log(files);
-            res.render("page2",{files: files,str: str})
+            res.render("page2",{files: files,add: add})
         })
     }
 })
 
 app.use("/download",(req,res)=>{
-    var url=req.originalUrl;
-    url=url.replace("/download/","");
+    var address=address_resolver(req);
+    var url=address.str;
+ //   url=url.replace("/download/","");
     url=decodeURIComponent(url);
     //console.log(url);
     var mtype=mime.getType(path+url);
@@ -74,17 +74,19 @@ app.use("/download",(req,res)=>{
 })
 
 app.use("/thumb",(req,res)=>{
-    var str=req.originalUrl;
-    str=str.replace("/thumb/","");
+    var address=address_resolver(req);
+    var str=address.str;
+    var add=address.add;
     str=decodeURIComponent(str);
+    //console.log(path+str);
     var mtype=mime.getType(path+str);
     if(mtype)
     {
         if(mtype.split("/")[0]=="image")
         {
-            var k=str.split("/");
-            str=str.replace("/"+k[k.length-1],"");
-            fs.readFile(path+str+"/.thumb/"+k[k.length-1],(err,data)=>{
+            str=str.replace("/"+add[add.length-1],"");
+           // console.log(path+str+"/.thumb/"+add[add.length-1])
+            fs.readFile(path+str+"/.thumb/"+add[add.length-1],(err,data)=>{
                 if(err)
                 {
                     req.forward={target: "http://localhost:3001/thumb"}
@@ -101,15 +103,26 @@ app.use("/thumb",(req,res)=>{
         }
         else
             res.sendFile(__dirname+"/images/video.png")
-        /*thumb(path+str).then(thumbnail=>{
-            var reader= new stream.Readable({read: ()=>{}});
-            reader.pipe(res);
-            reader.push(thumbnail);
-            reader.push(null);
-        })*/
     }
     else
         res.sendFile(__dirname+"/images/folder.png")
 })
 
+function address_resolver(request){
+    var add=request.query.add || [];
+    //console.log(add);
+    var str="";
+    if(Array.isArray(add))
+    {
+        add.forEach((val,num)=>{
+            str+="/"+val;
+        })
+    }
+    else
+    {
+        str+="/"+add;
+        add=[add];
+    }
+    return {add: add, str: str};
+}
 app.listen(3000);
