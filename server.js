@@ -12,7 +12,8 @@ var path="/media/satyam/funplace/megapixels";
 app.set('view engine','pug')
 app.set('views','./views')
 
-app.use("/files",express.static(__dirname+"/views"))
+app.use("/files",express.static(__dirname+"/views"));
+app.use("/images",express.static(__dirname+"/images"));
 
 app.use("/megapixel",(req,res)=>{
     var address=address_resolver(req);
@@ -28,7 +29,11 @@ app.use("/megapixel",(req,res)=>{
     if(mtype=="image")
         res.render("page",{files: [{name: str, type: mtype}], add: add});
     else if(mtype=="video")
-        res.render("page",{files: [{name: str, type: mtype}], add: add});
+    {
+        //console.log(str);
+        //res.render("page",{files: [{name: str, type: mtype}], add: add});
+        res.send({add: add})
+    }
     else
     {
         fs.readdir(path+str, (err,files)=>{
@@ -41,7 +46,7 @@ app.use("/megapixel",(req,res)=>{
                 {
                     var stats=fs.statSync(path+str+"/"+val);
                     if(stats.isFile())
-                        files[num]={name: val, type: "folder", fsize: (stats.size/1024/1024).toFixed(2)};
+                        files[num]={name: val, type: "file", fsize: (stats.size/1024/1024).toFixed(2)};
                     else
                         files[num]={name: val, type: "folder", fsize: "--"}
                 }
@@ -50,7 +55,7 @@ app.use("/megapixel",(req,res)=>{
                 files.splice(rindex[0],rindex.length);
             
             //console.log(files);
-            res.render("page2",{files: files,add: add})
+            res.render("page",{files: files,add: add})
         })
     }
 })
