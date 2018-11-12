@@ -7,6 +7,9 @@ body{
     overflow-x: hidden;
 }
 
+#optimise{
+    background-color: rgba(0, 0, 0, 0.301)
+}
 #container{
     width: 100%;
     height: 81%;
@@ -23,7 +26,7 @@ body{
     font-size: 20px;
     text-align: center;
     padding: 0px;
-    background-color:   rgba(26, 23, 23, 0.5);
+    background-color:   rgba(26, 23, 23, 0.795);
     color: white;
     position: fixed;
     overflow: hidden;
@@ -36,7 +39,9 @@ h3{
 
 .table{
     background-color: rgba(250, 246, 246, 0.452);
-    width: fit-content;
+    width: intrinsic;           /* Safari/WebKit uses a non-standard name */
+    width: -moz-max-content;    /* Firefox/Gecko */
+    width: -webkit-max-content; /* Chrome */
     padding: 30px;
     margin-top: 20px;
     margin-left: auto;
@@ -53,6 +58,7 @@ table,th{
 
 table{
     border-radius: 20px;
+    table-layout: fixed
 }
 tr{
     width: 50px;
@@ -81,8 +87,71 @@ tr:nth-child(odd) {
 #file-view{
     visibility: hidden;
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.582);
+    background-color: rgba(0, 0, 0, 0.644);
     top: 0;
     width: 100%;
     height: 100%;
+}
+
+#close{
+    position: fixed;
+    top: 10px;
+    left: 95%;
+    height: 40px;
+    width: 40px;
+}
+
+#close:hover{
+    background-color: rgba(233, 222, 222, 0.178);
+    border-radius: 100px;
+}
+
+#file{
+    width: 80%;
+    height: 80%;
+    margin-top: 80px;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    display: inline-block;
+    text-align: center;
+}
+
+#left{
+    margin-top: 100px;  
+    margin-left: 80px;
+    width: 50px;
+    visibility: hidden;
+    display: inline-block;
+    margin-right: 0px;
+}
+
+#right{
+    margin-top: 100px;
+    visibility: hidden;
+    margin-left:0px;
+    margin-right: 50px;
+    width: 50px;
+    display: inline-block;
+}
+
+#file-image{
+    max-height: 100%;
+    max-width: 100%;
+    margin: 0px;
+    display: inline-block;
+}
+
+.nav{
+    height: 100px;
+    width: 100px;
+    margin-bottom: 200px;
+}
+
+.nav:hover{
+    /*background-color: rgba(12, 11, 11, 0.753);*/
+    background-color: rgba(233, 222, 222, 0.082);
+
+    border-radius: 100px
 }

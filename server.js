@@ -26,13 +26,15 @@ app.use("/megapixel",(req,res)=>{
     if(mtype)
         mtype=mtype.split('/')[0];
 
-    if(mtype=="image")
-        res.render("page",{files: [{name: str, type: mtype}], add: add});
-    else if(mtype=="video")
+    if(mtype=="image" || mtype=="video")
+    {
+       // res.render("page",{files: [{name: str, type: mtype}], add: add});
+        res.send({add: add,type: mtype})        
+    /*else if(mtype=="video")
     {
         //console.log(str);
         //res.render("page",{files: [{name: str, type: mtype}], add: add});
-        res.send({add: add})
+        res.send({add: add,type: mtype})*/
     }
     else
     {
@@ -68,7 +70,7 @@ app.use("/download",(req,res)=>{
     //console.log(url);
     var mtype=mime.getType(path+url);
     if(mtype && (mtype.split("/")[0]=="image" || mtype.split("/")[0]=="video"))
-        res.sendFile(path+url)
+        res.download(path+url)
     else
     {
         var arch=archive('zip');
