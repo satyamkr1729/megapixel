@@ -8,7 +8,7 @@ body{
 }
 
 #optimise{
-    background-color: rgba(0, 0, 0, 0.301)
+    background-color: rgba(0, 0, 0, 0.301);
 }
 #container{
     width: 100%;
@@ -42,7 +42,7 @@ h3{
     width: intrinsic;           /* Safari/WebKit uses a non-standard name */
     width: -moz-max-content;    /* Firefox/Gecko */
     width: -webkit-max-content; /* Chrome */
-    padding: 30px;
+    padding: 3%;
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
@@ -108,7 +108,7 @@ tr.row:nth-child(odd) {
 }
 
 #file{
-    width: 60%;
+    width: 70%;
     height: 80%;
     margin-top: 80px;
     margin-bottom: 0;
@@ -122,10 +122,11 @@ tr.row:nth-child(odd) {
 #left{
     margin-top: 100px;  
     margin-left: 5%;
-    width: 10%;
+    width: 5%;
     visibility: hidden;
     display: inline-block;
     margin-right: 5%;
+    padding:0px;
 }
 
 #right{
@@ -133,8 +134,9 @@ tr.row:nth-child(odd) {
     visibility: hidden;
     margin-left: 5%;
     margin-right: 5%;
-    width: 10%;
+    width: 5%;
     display: inline-block;
+    padding: 0px;
 }
 
 #file-image{
@@ -145,8 +147,8 @@ tr.row:nth-child(odd) {
 }
 
 .nav{
-    max-height: 100px;
-    max-width: 100px;
+    max-height: 100%;
+    max-width: 100%;
     margin-bottom: 200px;
 }
 
@@ -160,4 +162,43 @@ tr.row:nth-child(odd) {
 .container{
     width: 100%;
     height: 100%;
+}
+
+/*page2 css*/
+.parent-file-container{
+    width: intrinsic;           /* Safari/WebKit uses a non-standard name */
+    width: -moz-max-content;    /* Firefox/Gecko */
+    width: -webkit-max-content; /* Chrome */
+    background-color: rgba(250, 246, 246, 0.452);
+    padding: 3vw;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 0.5px;
+    border-radius: 30px;
+}
+
+.files-container{
+    max-width: 70vw;
+    text-align: center;
+    margin: 0px;
+}
+.file-icon-div{
+    display: inline-block; 
+    width:20%; 
+
+    text-align: center; 
+    padding-left: 1em;
+}
+
+#file-icon{
+    max-height: 100%;
+    max-width: 100%;
+}
+
+#file-name{
+    margin: 0px;
+    height: 10%;
+    font-weight: normal;
+    font-size: 1em;
 }

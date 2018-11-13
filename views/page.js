@@ -1,5 +1,6 @@
 var prev;
 var next;
+var z;
 $(document).ready(function(){
     $('#left').click(function(e){
         setarrow(prev);
@@ -15,6 +16,7 @@ $(document).ready(function(){
 
     $('.file-list').click(function(e){
         e.preventDefault();
+        z=e;
        // var cl=e.currentTarget.id;
         //console.log(e);
         next=e.currentTarget.parentNode.parentNode.nextElementSibling;
@@ -28,7 +30,7 @@ $(document).ready(function(){
                 //console.log(str);
                 $('#file-view').css("visibility","visible");
                 if(data.type=="video")
-                    $('#file').html("<video height=95% width=100% controls><source src=\"/download/?"+str+"\"></video>")
+                    $('#file').html("<video height=100% width=95% controls><source src=\"/download/?"+str+"\"></video>")
                 else
                 {
                     $("#file").html("<img id=file-image src=\"/download/?"+str+"\">")
@@ -44,6 +46,38 @@ $(document).ready(function(){
         });
     
     })
+
+    $('.image-list').click(function(e){
+        e.preventDefault();
+        z=e;
+       // var cl=e.currentTarget.id;
+        //console.log(e);
+        next=e.currentTarget.nextElementSibling;
+        prev=e.currentTarget.previousElementSibling;
+        $.ajax({
+             url: e.currentTarget.href,
+             type: "GET",//type of posting the data
+             success: function (data) {
+                //console.log("recieved")
+                var str=resolve_address(data).str;            
+                //console.log(str);
+                $('#file-view').css("visibility","visible");
+                if(data.type=="video")
+                    $('#file').html("<video height=100% width=95% controls><source src=\"/download/?"+str+"\"></video>")
+                else
+                {
+                    $("#file").html("<img id=file-image src=\"/download/?"+str+"\">")
+                    if(!prev || prev.id!="theader")
+                        $('#left').css("visibility","visible");
+                    if(next)
+                        $('#right').css("visibility","visible");
+                }
+            },
+             error: function(xhr, ajaxOptions, thrownError){
+                //what to do in error
+             },
+        });
+    })
 })
 
 function close(){
@@ -58,7 +92,7 @@ function close(){
 function setarrow(elem){
     if(elem && elem.id!='theader')
     {
-        var elem_url=elem.childNodes[0].childNodes[0].href;
+        var elem_url=elem.childNodes[0].childNodes[0].href || elem.href;
    // console.log(k++)
     //console.log(elem_url)
         prev=elem.previousElementSibling;
@@ -80,7 +114,7 @@ function setarrow(elem){
                 $('#close').click(close);
                 $('#left').css("visibility","visible");
                 $('#right').css("visibility","visible");
-                if(prev.id=="theader")
+                if(!prev || prev.id=="theader")
                     $('#left').css("visibility","hidden");
                 if(!next)
                     $('#right').css("visibility","hidden");

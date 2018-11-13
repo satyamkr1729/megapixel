@@ -57,7 +57,7 @@ app.use("/megapixel",(req,res)=>{
                 files.splice(rindex[0],rindex.length);
             
             //console.log(files);
-            res.render("page",{files: files,add: add})
+            res.render("page2",{files: files,add: add})
         })
     }
 })
