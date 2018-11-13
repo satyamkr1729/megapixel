@@ -16,27 +16,38 @@ html
                 -else
                     -str+="&add="+val;
             -})
-            div(id="container")
-                div(class="table")
-                    table(class="tcontent")
-                        tr(class="row" id="theader") 
-                            th Name
-                            th Size
-                            th  Download Link
-                        -var i="0";
-                        -files.forEach((val,num)=>{
-                            -i=String(Number(i)+1);
-                            tr(class="row" id=i)
-                                td
-                                    -if(val.type=="folder")
-                                        a(href="/megapixel/?"+str+"&add="+val.name) #{val.name}
-                                    -else
-                                        a(href="/megapixel/?"+str+"&add="+val.name class="file-list") #{val.name}
-                                td
-                                    div #{val.fsize}
-                                td 
-                                    a(href="/download/?"+str+"&add="+val.name) Download
-                        -})
+            -if(mode!="3")
+                div(id="container")
+                    div(class="table")
+                        table(class="tcontent")
+                            tr(class="row" id="theader") 
+                                th Name
+                                th Size
+                                th  Download Link
+                            -var i="0";
+                            -files.forEach((val,num)=>{
+                                -i=String(Number(i)+1);
+                                tr(class="row" id=i)
+                                    td
+                                        -if(val.type=="folder")
+                                            a(href="/megapixel/?"+str+"&add="+val.name+"&mode=1") #{val.name}
+                                        -else
+                                            a(href="/megapixel/?"+str+"&add="+val.name+"&mode=1" class="file-list") #{val.name}
+                                    td
+                                        div #{val.fsize}
+                                    td 
+                                        a(href="/download/?"+str+"&add="+val.name) Download
+                            -})
+            -else
+                div(class="mode-selector")
+                    div(class="image-thumbnail-div")
+                        a(href="/megapixel/?"+str+"&mode=1")
+                            img(src="/images/mode1.png" id="file-icon")
+                        p Table mode(fast)
+                    div(class="image-thumbnail-div")
+                        a(href="/megapixel/?"+str+"&mode=2")
+                            img(src="/images/mode2.png" id="file-icon")
+                        p Picture mode(little slow)
         div(id="file-view")
             div
                 img(src="/images/close.png" id="close")
@@ -46,4 +57,3 @@ html
                 div(id="file")
                 div(id="right")
                     img(src="/images/arrowr.png" class="nav")
-        

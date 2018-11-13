@@ -15,10 +15,11 @@ app.set('views','./views')
 app.use("/files",express.static(__dirname+"/views"));
 app.use("/images",express.static(__dirname+"/images"));
 
-app.use("/megapixel",(req,res)=>{
+app.use("/megapixel/",(req,res)=>{
     var address=address_resolver(req);
     var str=address.str;
     var add=address.add;
+    var mode= req.query.mode || "3";
     str=decodeURIComponent(str);
   //  console.log(path+str);
 
@@ -48,8 +49,11 @@ app.use("/megapixel",(req,res)=>{
             if(rindex.length!=0)
                 files.splice(rindex[0],rindex.length);
             
-            //console.log(files);
-            res.render("page2",{files: files,add: add})
+            console.log(mode);
+            if(mode=="3" || mode=="2")
+                res.render("page2",{files: files,add: add,mode: mode})
+            else
+            res.render("page",{files: files,add: add, mode: mode})
         })
     }
 })
@@ -122,5 +126,4 @@ function address_resolver(request){
     }
     return {add: add, str: str};
 }
-console.log(process.env.HOST);
 app.listen(3000);

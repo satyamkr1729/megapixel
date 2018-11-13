@@ -9,6 +9,10 @@ body{
 
 #optimise{
     background-color: rgba(0, 0, 0, 0.301);
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 #container{
     width: 100%;
@@ -217,4 +221,35 @@ tr.row:nth-child(odd) {
     font-weight: normal;
     font-size: 1em;
     padding-top: 10px;
+}
+
+.mode-selector{
+    margin-left: auto;
+    margin-right: auto; 
+    text-align: center;
+    width: fit-content;
+    margin-top: 100px;
+}
+
+.mode-selector #file-icon{
+    background-color: rgba(223, 217, 209, 0.541);
+    padding: 20px;
+    border-radius: 30px;
+}
+
+.mode-selector .image-thumbnail-div{
+    margin-left: 40px;
+    height: 40%; 
+    width: fit-content;
+}
+
+.image-thumbnail-div p{
+    color: rgb(10, 10, 10);
+    font-size: 20px;
+    font-weight: bold;
+    background-color: rgba(223, 217, 209, 0.541);
+    padding: 0px;
+    margin: 0px;
+    margin-top: 20px;
+    border-radius: 30px;
 }
