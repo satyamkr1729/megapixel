@@ -27,21 +27,15 @@ html
                         -files.forEach((val,num)=>{
                             -i=String(Number(i)+1);
                             tr(class="row" id=i)
-                                -if(val.type=="folder" || val.type=="file")
-                                    td
-                                        -if(val.type=="folder")
-                                            a(href="/megapixel/?"+str+"&add="+val.name) #{val.name}
-                                        -else
-                                            a(href="/megapixel/?"+str+"&add="+val.name class="file-list") #{val.name}
-                                    td
-                                        div #{val.fsize}
-                                    td 
-                                        a(href="/download/?"+str+"&add="+val.name) Download
-                                -else if(val.type=="image")
-                                    img(src="/download/?"+str+"" height="50%" width="40%")
-                                -else
-                                    video(height="50%" width="40%" controls)
-                                        source(src="/download/?"+str)
+                                td
+                                    -if(val.type=="folder")
+                                        a(href="/megapixel/?"+str+"&add="+val.name) #{val.name}
+                                    -else
+                                        a(href="/megapixel/?"+str+"&add="+val.name class="file-list") #{val.name}
+                                td
+                                    div #{val.fsize}
+                                td 
+                                    a(href="/download/?"+str+"&add="+val.name) Download
                         -})
         div(id="file-view")
             div

@@ -19,22 +19,16 @@ html
                             -str+="&add="+val;
                     -})
                     -files.forEach((val,num)=>{
-                        -if(val.type=="folder" || val.type=="file")
-                            -if(val.type=="folder")
-                                a(href="/megapixel/?"+str+"&add="+val.name)
-                                    div(class="file-icon-div")
-                                        img(id="file-icon" src="/thumb/?"+str+"&add="+val.name) 
-                                        p(id="file-name") #{val.name}
-                            -else
-                                a(href="/megapixel/?"+str+"&add="+val.name class="image-list")
-                                    div(class="file-icon-div")
-                                        img(id="file-icon" src="/thumb/?"+str+"&add="+val.name) 
-                                        p(id="file-name") #{val.name}
-                        -else if(val.type=="image")
-                            img(src="/download/?"+str height="50%" width="40%")
+                        -if(val.type=="folder")
+                            a(href="/megapixel/?"+str+"&add="+val.name)
+                                div(class="file-icon-div")
+                                    img(id="file-icon" src="/thumb/?"+str+"&add="+val.name) 
+                                    p(id="file-name") #{val.name}
                         -else
-                            video(height="50%" width="40%" controls)
-                                source(src="/download/?"+str)
+                            a(href="/megapixel/?"+str+"&add="+val.name class="file-list")
+                                div(class="file-icon-div")
+                                    img(id="file-icon" src="/thumb/?"+str+"&add="+val.name) 
+                                    p(id="file-name") #{val.name}
                     -})
         div(id="file-view")
             div

@@ -19,64 +19,10 @@ $(document).ready(function(){
         z=e;
        // var cl=e.currentTarget.id;
         //console.log(e);
-        next=e.currentTarget.parentNode.parentNode.nextElementSibling;
-        prev=e.currentTarget.parentNode.parentNode.previousElementSibling;
-        $.ajax({
-             url: e.currentTarget.href,
-             type: "GET",//type of posting the data
-             success: function (data) {
-                //console.log("recieved")
-                var str=resolve_address(data).str;            
-                //console.log(str);
-                $('#file-view').css("visibility","visible");
-                if(data.type=="video")
-                    $('#file').html("<video height=100% width=95% controls><source src=\"/download/?"+str+"\"></video>")
-                else
-                {
-                    $("#file").html("<img id=file-image src=\"/download/?"+str+"\">")
-                    if(prev.id!="theader")
-                        $('#left').css("visibility","visible");
-                    if(next)
-                        $('#right').css("visibility","visible");
-                }
-            },
-             error: function(xhr, ajaxOptions, thrownError){
-                //what to do in error
-             },
-        });
+        next=e.currentTarget.parentNode.parentNode.nextElementSibling || e.currentTarget.nextElementSibling;
+        prev=e.currentTarget.parentNode.parentNode.previousElementSibling || e.currentTarget.previousElementSibling;
+        send_ajax(e.currentTarget.href);
     
-    })
-
-    $('.image-list').click(function(e){
-        e.preventDefault();
-        z=e;
-       // var cl=e.currentTarget.id;
-        //console.log(e);
-        next=e.currentTarget.nextElementSibling;
-        prev=e.currentTarget.previousElementSibling;
-        $.ajax({
-             url: e.currentTarget.href,
-             type: "GET",//type of posting the data
-             success: function (data) {
-                //console.log("recieved")
-                var str=resolve_address(data).str;            
-                //console.log(str);
-                $('#file-view').css("visibility","visible");
-                if(data.type=="video")
-                    $('#file').html("<video height=100% width=95% controls><source src=\"/download/?"+str+"\"></video>")
-                else
-                {
-                    $("#file").html("<img id=file-image src=\"/download/?"+str+"\">")
-                    if(!prev || prev.id!="theader")
-                        $('#left').css("visibility","visible");
-                    if(next)
-                        $('#right').css("visibility","visible");
-                }
-            },
-             error: function(xhr, ajaxOptions, thrownError){
-                //what to do in error
-             },
-        });
     })
 })
 
@@ -97,32 +43,7 @@ function setarrow(elem){
     //console.log(elem_url)
         prev=elem.previousElementSibling;
         next=elem.nextElementSibling;
-        $.ajax({
-            url: elem_url,
-            type: "GET",
-            success: function (data) {
-                // console.log("recieved")
-                //console.log(str);
-                var str=resolve_address(data).str;
-               $('#file-view').css("visibility","visible");
-               if(data.type=="video")
-                   $('#file').html("<video height=100% width=80% controls><source src=\"/download/?"+str+"\"></video>")
-               else
-               {
-                    $("#file").html("<img id=file-image src=\"/download/?"+str+"\">")
-               }
-                $('#close').click(close);
-                $('#left').css("visibility","visible");
-                $('#right').css("visibility","visible");
-                if(!prev || prev.id=="theader")
-                    $('#left').css("visibility","hidden");
-                if(!next)
-                    $('#right').css("visibility","hidden");
-           },
-            error: function(xhr, ajaxOptions, thrownError){
-               //what to do in error
-            },
-        });
+        send_ajax(elem_url);
     }
 }
 
@@ -137,4 +58,32 @@ function resolve_address(data)
            str+="&add="+val;
    })
    return {str: str}
+}
+
+function send_ajax(url){
+    $.ajax({
+        url: url,
+        type: "GET",
+        success: function (data) {
+            // console.log("recieved")
+            //console.log(str);
+            var str=resolve_address(data).str;
+            $('#file-view').css("visibility","visible");
+            if(data.type=="video")
+               $('#file').html("<video height=100% width=95% controls><source src=\"/download/?"+str+"\"></video>")
+            else
+            {
+                $("#file").html("<img id=file-image src=\"/download/?"+str+"\">")
+                $('#left').css("visibility","visible");
+                $('#right').css("visibility","visible");
+                if(!prev || prev.id=="theader")
+                    $('#left').css("visibility","hidden");
+                if(!next)
+                    $('#right').css("visibility","hidden");
+            }
+       },
+        error: function(xhr, ajaxOptions, thrownError){
+           //what to do in error
+        },
+    });
 }

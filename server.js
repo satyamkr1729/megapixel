@@ -27,15 +27,7 @@ app.use("/megapixel",(req,res)=>{
         mtype=mtype.split('/')[0];
 
     if(mtype=="image" || mtype=="video")
-    {
-       // res.render("page",{files: [{name: str, type: mtype}], add: add});
         res.send({add: add,type: mtype})        
-    /*else if(mtype=="video")
-    {
-        //console.log(str);
-        //res.render("page",{files: [{name: str, type: mtype}], add: add});
-        res.send({add: add,type: mtype})*/
-    }
     else
     {
         fs.readdir(path+str, (err,files)=>{
@@ -57,7 +49,7 @@ app.use("/megapixel",(req,res)=>{
                 files.splice(rindex[0],rindex.length);
             
             //console.log(files);
-            res.render("page2",{files: files,add: add})
+            res.render("page",{files: files,add: add})
         })
     }
 })
@@ -65,7 +57,6 @@ app.use("/megapixel",(req,res)=>{
 app.use("/download",(req,res)=>{
     var address=address_resolver(req);
     var url=address.str;
- //   url=url.replace("/download/","");
     url=decodeURIComponent(url);
     //console.log(url);
     var mtype=mime.getType(path+url);
@@ -92,7 +83,6 @@ app.use("/thumb",(req,res)=>{
         if(mtype.split("/")[0]=="image")
         {
             str=str.replace("/"+add[add.length-1],"");
-           // console.log(path+str+"/.thumb/"+add[add.length-1])
             fs.readFile(path+str+"/.thumb/"+add[add.length-1],(err,data)=>{
                 if(err)
                 {
