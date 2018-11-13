@@ -6,7 +6,7 @@ $(document).ready(function(){
     });
 
     $('#right').click(function(e){
-        setarrow(next);
+        setarrow(next);        
     })
 
     $('#close').click(function(e){
@@ -28,12 +28,14 @@ $(document).ready(function(){
                 //console.log(str);
                 $('#file-view').css("visibility","visible");
                 if(data.type=="video")
-                    $('#file').html("<video height=100% width=80% controls><source src=\"/download/?"+str+"\"></video>")
+                    $('#file').html("<video height=95% width=100% controls><source src=\"/download/?"+str+"\"></video>")
                 else
                 {
                     $("#file").html("<img id=file-image src=\"/download/?"+str+"\">")
-                    $('#left').css("visibility","visible");
-                    $('#right').css("visibility","visible");
+                    if(prev.id!="theader")
+                        $('#left').css("visibility","visible");
+                    if(next)
+                        $('#right').css("visibility","visible");
                 }
             },
              error: function(xhr, ajaxOptions, thrownError){
@@ -45,7 +47,7 @@ $(document).ready(function(){
 })
 
 function close(){
-    console.log("close");
+    //console.log("close");
     $('#file').html("");
     $('#file-view').css("visibility","hidden");
     $('#left').css("visibility","hidden");
@@ -54,35 +56,40 @@ function close(){
 }
 
 function setarrow(elem){
-    z=elem;
-    if(elem)
+    if(elem && elem.id!='theader')
+    {
         var elem_url=elem.childNodes[0].childNodes[0].href;
-    
    // console.log(k++)
     //console.log(elem_url)
-    prev=elem.previousElementSibling;
-    next=elem.nextElementSibling;
-    $.ajax({
-        url: elem_url,
-        type: "GET",
-        success: function (data) {
-            // console.log("recieved")
-            //console.log(str);
-            var str=resolve_address(data).str;
-           $('#file-view').css("visibility","visible");
-           if(data.type=="video")
-               $('#file').html("<video height=100% width=80% controls><source src=\"/download/?"+str+"\"></video>")
-           else
-           {
-                $("#file").html("<img id=file-image src=\"/download/?"+str+"\">")
-           }
-           $('#close').click(close);
-       },
-        error: function(xhr, ajaxOptions, thrownError){
-           //what to do in error
-        },
-    });
-    
+        prev=elem.previousElementSibling;
+        next=elem.nextElementSibling;
+        $.ajax({
+            url: elem_url,
+            type: "GET",
+            success: function (data) {
+                // console.log("recieved")
+                //console.log(str);
+                var str=resolve_address(data).str;
+               $('#file-view').css("visibility","visible");
+               if(data.type=="video")
+                   $('#file').html("<video height=100% width=80% controls><source src=\"/download/?"+str+"\"></video>")
+               else
+               {
+                    $("#file").html("<img id=file-image src=\"/download/?"+str+"\">")
+               }
+                $('#close').click(close);
+                $('#left').css("visibility","visible");
+                $('#right').css("visibility","visible");
+                if(prev.id=="theader")
+                    $('#left').css("visibility","hidden");
+                if(!next)
+                    $('#right').css("visibility","hidden");
+           },
+            error: function(xhr, ajaxOptions, thrownError){
+               //what to do in error
+            },
+        });
+    }
 }
 
 function resolve_address(data)

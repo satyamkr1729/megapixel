@@ -1,6 +1,7 @@
 html
     head
         title Megapixel
+        meta(name="viewport" content="width=device-width, initial-scale=1")
         link(href="/files/page.css" rel="stylesheet" type="text/css")
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript")
         script(src="/files/page.js" type="text/javascript")
@@ -18,7 +19,7 @@ html
             div(id="container")
                 div(class="table")
                     table(class="tcontent")
-                        tr(class="row") 
+                        tr(class="row" id="theader") 
                             th Name
                             th Size
                             th  Download Link
@@ -45,9 +46,10 @@ html
         div(id="file-view")
             div
                 img(src="/images/close.png" id="close")
-            div(id="left")
-                img(src="/images/arrowl.png" class="nav")
-            div(id="file")
-            div(id="right")
-                img(src="/images/arrowr.png" class="nav")
+            div(class="view-table")
+                div(id="left")
+                    img(src="/images/arrowl.png" class="nav")
+                div(id="file")
+                div(id="right")
+                    img(src="/images/arrowr.png" class="nav")
         

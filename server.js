@@ -132,4 +132,5 @@ function address_resolver(request){
     }
     return {add: add, str: str};
 }
+console.log(process.env.HOST);
 app.listen(3000);
