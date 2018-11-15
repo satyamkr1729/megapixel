@@ -49,7 +49,7 @@ app.use("/megapixel/",(req,res)=>{
             if(rindex.length!=0)
                 files.splice(rindex[0],rindex.length);
             
-            console.log(mode);
+           // console.log(mode);
             if(mode=="3" || mode=="2")
                 res.render("page2",{files: files,add: add,mode: mode})
             else
