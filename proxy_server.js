@@ -4,7 +4,7 @@ var stream=require('stream')
 var fs=require('fs');
 
 var app=express();
-var path="/media/satyam/funplace/megapixels";
+var path="/run/media/satyam/funplace/megapixels";
 
 app.use("/thumb",(req,res)=>{
     var address=address_resolver(req);

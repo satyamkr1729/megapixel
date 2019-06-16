@@ -7,7 +7,8 @@ var stream=require('stream')
 
 var app=express();
 var getSize=require('get-folder-size');
-var path="/media/satyam/funplace/megapixels";
+var path="/run/media/satyam/funplace/megapixels";
+var PORT=3000;
 
 app.set('view engine','pug')
 app.set('views','./views')
@@ -31,6 +32,7 @@ app.use("/megapixel/",(req,res)=>{
         res.send({add: add,type: mtype})        
     else
     {
+        //console.log(path+str);
         fs.readdir(path+str, (err,files)=>{
           //   console.log(files)
             var rindex=[];
@@ -126,4 +128,5 @@ function address_resolver(request){
     }
     return {add: add, str: str};
 }
-app.listen(3000);
+app.listen(PORT);
+console.log("Listening at port "+PORT)
